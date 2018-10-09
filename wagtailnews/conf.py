@@ -5,9 +5,14 @@ try:
     name = settings.WAGTAILNEWS_PAGINATOR
 except AttributeError:
     from django.core.paginator import Paginator, EmptyPage
+    
+    try:
+        items_per_page = settings.WAGTAILNEWS_NEWS_PER_PAGE
+    except AttributeError:
+        items_per_page = 20
 
     def paginate(request, items):
-        paginator = Paginator(items, 20)
+        paginator = Paginator(items, items_per_page)
 
         try:
             page_number = int(request.GET['page'])
